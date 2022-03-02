@@ -1,0 +1,32 @@
+﻿<Window x:Class="GeneradorLlaves.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GeneradorLlaves"
+        mc:Ignorable="d"
+        Title="Generador de Llaves" Height="444.8" Width="571.8" ResizeMode="NoResize" FontFamily="Microsoft JhengHei" FontSize="18" Loaded="Window_Loaded" WindowStartupLocation="CenterScreen">
+
+    
+    
+    <Grid>
+        
+        <Button x:Name="btnGenerar" Content="Procesar" HorizontalAlignment="Left" Margin="105,355,0,0" VerticalAlignment="Top" Width="182" Height="41" Click="btnGenerar_Click" TabIndex="7"/>
+        <Button x:Name="btnLimpiar" Content="Limpiar" HorizontalAlignment="Left" Margin="292,355,0,0" VerticalAlignment="Top" Width="129" Height="41" Click="btnLimpiar_Click" TabIndex="8"/>
+        <TextBox x:Name="txtInstancia" HorizontalAlignment="Left" Height="34" Margin="104,35,0,0" VerticalAlignment="Top" Width="440" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TabIndex="1"/>
+        <TextBox x:Name="txtTextOuput" HorizontalAlignment="Left" Height="74" Margin="15,276,0,0" VerticalAlignment="Top" Width="529" FontSize="12" TextWrapping="Wrap"/>
+        <Label x:Name="lblGenerar" Content="Instancia:" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Cursor="None" FontSize="18" FontFamily="Microsoft JhengHei"/>
+        <Label x:Name="lblResultado" Content="Resultado" HorizontalAlignment="Left" Margin="230,237,0,0" VerticalAlignment="Top" Cursor="None" FontSize="18" FontFamily="Microsoft JhengHei"/>
+        <RadioButton x:Name="rbtnEncript" Content="Encriptar" HorizontalAlignment="Left" Margin="149,209,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TabIndex="5"/>
+        <RadioButton x:Name="rbtnDecript" Content="Desencriptar" HorizontalAlignment="Left" Margin="264,209,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Checked="rbtnDecript_Checked" TabIndex="6"/>
+        <TextBox x:Name="txtNit" HorizontalAlignment="Left" Height="34" Margin="104,74,0,0" VerticalAlignment="Top" Width="220" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TabIndex="2"/>
+        <Label x:Name="lblNit" Content="Nit:" HorizontalAlignment="Left" Margin="10,74,0,0" VerticalAlignment="Top" Cursor="None" FontSize="18" FontFamily="Microsoft JhengHei"/>
+        <TextBox x:Name="txtNombre" HorizontalAlignment="Left" Height="34" Margin="104,113,0,0" VerticalAlignment="Top" Width="440" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TabIndex="3"/>
+        <Label x:Name="lblNombre" Content="Nombre:" HorizontalAlignment="Left" Margin="10,113,0,0" VerticalAlignment="Top" Cursor="None" FontSize="18" FontFamily="Microsoft JhengHei"/>
+        <Label x:Name="lblFecha" Content="Fecha:" HorizontalAlignment="Left" Margin="15,152,0,0" VerticalAlignment="Top" Cursor="None" FontSize="18" FontFamily="Microsoft JhengHei"/>
+        <TextBox x:Name="txtFecha" HorizontalAlignment="Left" Height="34" Margin="104,152,0,0" VerticalAlignment="Top" Width="125" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TabIndex="4"/>
+        <Button x:Name="Text" Content="Texto" HorizontalAlignment="Left" Margin="469,244,0,0" VerticalAlignment="Top" Width="75" Click="Text_Click"/>
+        <Label x:Name="lbl" Content="Sistema:" HorizontalAlignment="Left" Margin="276,152,0,0" VerticalAlignment="Top" Cursor="None" FontSize="18" FontFamily="Microsoft JhengHei" Width="80"/>
+        <TextBox x:Name="txtSistema" HorizontalAlignment="Left" Height="34" Margin="361,152,0,0" VerticalAlignment="Top" Width="183" FontSize="12" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" TabIndex="4"/>
+    </Grid>
+</Window>
