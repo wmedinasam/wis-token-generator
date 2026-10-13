@@ -1,0 +1,34 @@
+﻿@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Error | Generador de Llaves</PageTitle>
+
+<h1 class="text-danger">Ocurrió un error.</h1>
+<h2 class="text-danger">No se pudo completar la solicitud.</h2>
+
+@if (ShowRequestId)
+{
+    <p>
+        <strong>Identificador de solicitud:</strong> <code>@RequestId</code>
+    </p>
+}
+
+<h3>Modo de desarrollo</h3>
+<p>
+    El entorno <strong>Development</strong> muestra más detalles sobre el error.
+</p>
+<p>
+    No habilites este entorno en aplicaciones publicadas, ya que puede mostrar información sensible.
+    Para depuración local, configura <strong>ASPNETCORE_ENVIRONMENT</strong> como <strong>Development</strong> y reinicia la aplicación.
+</p>
+
+@code{
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

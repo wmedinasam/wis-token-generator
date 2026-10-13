@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneradorLlaves", "GeneradorLlaves\GeneradorLlaves.csproj", "{C35EB6E1-2895-4F15-B995-5F150B2231DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneradorLlaves.Blazor", "GeneradorLlaves.Blazor\GeneradorLlaves.Blazor.csproj", "{BDC1CFFE-9E64-469B-BB6C-8454BB1C17E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeneradorLlaves.Blazor.Tests", "GeneradorLlaves.Blazor.Tests\GeneradorLlaves.Blazor.Tests.csproj", "{E539B435-CB96-4FA7-9E18-947A12F35C2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C35EB6E1-2895-4F15-B995-5F150B2231DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C35EB6E1-2895-4F15-B995-5F150B2231DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C35EB6E1-2895-4F15-B995-5F150B2231DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C35EB6E1-2895-4F15-B995-5F150B2231DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDC1CFFE-9E64-469B-BB6C-8454BB1C17E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDC1CFFE-9E64-469B-BB6C-8454BB1C17E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDC1CFFE-9E64-469B-BB6C-8454BB1C17E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDC1CFFE-9E64-469B-BB6C-8454BB1C17E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E539B435-CB96-4FA7-9E18-947A12F35C2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E539B435-CB96-4FA7-9E18-947A12F35C2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E539B435-CB96-4FA7-9E18-947A12F35C2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E539B435-CB96-4FA7-9E18-947A12F35C2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

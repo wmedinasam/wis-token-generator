@@ -1,0 +1,260 @@
+﻿@page "/"
+@using System.Security.Cryptography
+@using GeneradorLlaves.Blazor.Models
+@using GeneradorLlaves.Blazor.Services
+@using Newtonsoft.Json
+@inject KeyGeneratorService KeyGenerator
+
+<PageTitle>Generador de Llaves</PageTitle>
+
+<main class="workspace">
+    <header class="page-heading">
+        <div>
+            <p class="eyebrow">UTILIDAD INTERNA <span>·</span> LICENCIAS</p>
+            <h1>Generador de Llaves</h1>
+            <p class="page-description">Crea o consulta llaves de licencia y cifra texto con el formato existente.</p>
+        </div>
+        <span class="server-badge"><span aria-hidden="true"></span> Procesamiento en servidor</span>
+    </header>
+
+    <div class="tool-tabs" role="tablist" aria-label="Herramientas">
+        <button type="button" role="tab" aria-selected="@(!showTextTool)" class="tool-tab @(!showTextTool ? "active" : "")" @onclick="() => SelectTool(false)">
+            <span class="tab-number">01</span> Llaves
+        </button>
+        <button type="button" role="tab" aria-selected="@showTextTool" class="tool-tab @(showTextTool ? "active" : "")" @onclick="() => SelectTool(true)">
+            <span class="tab-number">02</span> Texto
+        </button>
+    </div>
+
+    @if (!showTextTool)
+    {
+        <section class="tool-panel" role="tabpanel" aria-label="Generador de llaves">
+            <div class="panel-heading">
+                <div>
+                    <h2>Datos de la licencia</h2>
+                    <p>Completa los campos para generar una llave o pega una existente para consultarla.</p>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="notice error-notice" role="alert">@errorMessage</div>
+            }
+
+            <div class="operation-picker" aria-label="Operación">
+                <span class="field-label">Operación</span>
+                <div class="operation-options">
+                    <button type="button" class="operation-option @(encryptMode ? "selected" : "")" aria-pressed="@encryptMode" @onclick="() => SetEncryptMode(true)">
+                        <span class="operation-icon" aria-hidden="true">↗</span>
+                        <span><strong>Encriptar</strong><small>Crear una llave nueva</small></span>
+                    </button>
+                    <button type="button" class="operation-option @(!encryptMode && operationSelected ? "selected" : "")" aria-pressed="@(!encryptMode && operationSelected)" @onclick="() => SetEncryptMode(false)">
+                        <span class="operation-icon" aria-hidden="true">↙</span>
+                        <span><strong>Desencriptar</strong><small>Consultar una llave</small></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-grid">
+                <div class="field field-instance">
+                    <label for="instance">Instancia</label>
+                    <input id="instance" class="form-control" @bind="model.Instancia" autocomplete="off" />
+                </div>
+                <div class="field">
+                    <label for="nit">NIT</label>
+                    <input id="nit" class="form-control" @bind="model.Nit" autocomplete="off" />
+                </div>
+                <div class="field field-name">
+                    <label for="customer">Nombre</label>
+                    <input id="customer" class="form-control" @bind="model.NombreCliente" autocomplete="off" />
+                </div>
+                <div class="field">
+                    <label for="expiration">Fecha</label>
+                    <input id="expiration" class="form-control" @bind="model.FechaVencimiento" autocomplete="off" />
+                </div>
+                <div class="field">
+                    <label for="system">Sistema</label>
+                    <input id="system" class="form-control" @bind="model.Sistema" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="field output-field">
+                <div class="output-label-row">
+                    <label for="license-result">Resultado</label>
+                    <span>@(encryptMode ? "Llave cifrada" : operationSelected ? "Pega aquí la llave cifrada" : "Selecciona una operación")</span>
+                </div>
+                <textarea id="license-result" class="form-control code-input" rows="4" @bind="licenseInput" readonly="@(!operationSelected || encryptMode)" spellcheck="false"></textarea>
+            </div>
+
+            <div class="panel-actions">
+                <button type="button" class="btn btn-primary action-primary" @onclick="ProcessLicense">
+                    @(operationSelected ? encryptMode ? "Generar llave" : "Consultar llave" : "Procesar")
+                    <span aria-hidden="true">→</span>
+                </button>
+                <button type="button" class="btn action-secondary" @onclick="ClearLicense">Limpiar</button>
+            </div>
+        </section>
+    }
+    else
+    {
+        <section class="tool-panel" role="tabpanel" aria-label="Cifrado de texto">
+            <div class="panel-heading">
+                <div>
+                    <h2>Texto libre</h2>
+                    <p>Encripta o desencripta una cadena usando el mismo formato de las llaves.</p>
+                </div>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="notice error-notice" role="alert">@errorMessage</div>
+            }
+
+            <div class="text-tool-grid">
+                <div class="field">
+                    <label for="text-input">Texto de entrada</label>
+                    <textarea id="text-input" class="form-control text-area code-input" rows="9" @bind="textInput" spellcheck="false"></textarea>
+                </div>
+                <div class="field">
+                    <label for="text-output">Resultado</label>
+                    <textarea id="text-output" class="form-control text-area code-input" rows="9" @bind="textOutput" readonly spellcheck="false"></textarea>
+                </div>
+            </div>
+
+            <div class="panel-actions">
+                <button type="button" class="btn btn-primary action-primary" @onclick="EncryptText">
+                    Encriptar <span aria-hidden="true">→</span>
+                </button>
+                <button type="button" class="btn action-secondary" @onclick="DecryptText">Desencriptar</button>
+            </div>
+        </section>
+    }
+
+    <footer class="page-footer">
+        <span>Generador de Llaves</span>
+        <span>Las llaves mantienen el formato de cifrado de la aplicación anterior.</span>
+    </footer>
+</main>
+
+@code {
+    private KeyModel model = new();
+    private string licenseInput = string.Empty;
+    private string textInput = string.Empty;
+    private string textOutput = string.Empty;
+    private string? errorMessage;
+    private bool showTextTool;
+    private bool operationSelected;
+    private bool encryptMode;
+
+    private void SelectTool(bool textTool)
+    {
+        showTextTool = textTool;
+        errorMessage = null;
+    }
+
+    private void SetEncryptMode(bool encrypt)
+    {
+        encryptMode = encrypt;
+        operationSelected = true;
+        errorMessage = null;
+    }
+
+    private void ProcessLicense()
+    {
+        errorMessage = null;
+
+        if (!operationSelected)
+        {
+            errorMessage = "Debe seleccionar una opción.";
+            return;
+        }
+
+        if (encryptMode)
+        {
+            try
+            {
+                licenseInput = KeyGenerator.GenerateLicense(model);
+            }
+            catch (ArgumentException)
+            {
+                errorMessage = "No fue posible generar la llave con los datos ingresados.";
+            }
+
+            return;
+        }
+
+        if (string.IsNullOrEmpty(licenseInput))
+        {
+            errorMessage = "Debe ingresar una cadena encriptada.";
+            return;
+        }
+
+        try
+        {
+            model = KeyGenerator.DecryptLicense(licenseInput);
+        }
+        catch (FormatException)
+        {
+            errorMessage = "LLAVE INCORRECTA. Verifica la cadena encriptada.";
+        }
+        catch (CryptographicException)
+        {
+            errorMessage = "LLAVE INCORRECTA. Verifica la cadena encriptada.";
+        }
+        catch (JsonException)
+        {
+            errorMessage = "La llave descifrada no contiene datos válidos.";
+        }
+        catch (InvalidDataException)
+        {
+            errorMessage = "La llave descifrada no contiene datos válidos.";
+        }
+        catch (ArgumentException)
+        {
+            errorMessage = "LLAVE INCORRECTA. Verifica la cadena encriptada.";
+        }
+    }
+
+    private void ClearLicense()
+    {
+        model = new KeyModel();
+        licenseInput = string.Empty;
+        operationSelected = false;
+        encryptMode = false;
+        errorMessage = null;
+    }
+
+    private void EncryptText()
+    {
+        errorMessage = null;
+        try
+        {
+            textOutput = KeyGenerator.EncryptText(textInput);
+        }
+        catch (ArgumentException)
+        {
+            errorMessage = "No fue posible encriptar el texto ingresado.";
+        }
+    }
+
+    private void DecryptText()
+    {
+        errorMessage = null;
+        try
+        {
+            textOutput = KeyGenerator.DecryptText(textInput);
+        }
+        catch (FormatException)
+        {
+            errorMessage = "LLAVE INCORRECTA. Verifica el texto encriptado.";
+        }
+        catch (CryptographicException)
+        {
+            errorMessage = "LLAVE INCORRECTA. Verifica el texto encriptado.";
+        }
+        catch (ArgumentException)
+        {
+            errorMessage = "LLAVE INCORRECTA. Verifica el texto encriptado.";
+        }
+    }
+}
